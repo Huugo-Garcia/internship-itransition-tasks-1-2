@@ -23,7 +23,7 @@ Given a set of strings provided via **command-line arguments**, the goal is to d
 **Input:**
 
 ```bash
-node script.js abcdef abcxyz abc123
+ts-node task-1/task-1.ts abcdef abcxyz abc123
 ```
 
 **Output:**
@@ -43,7 +43,7 @@ abc
 **Input:**
 
 ```bash
-node script.js programming gaming ram
+ts-node task-1/task-1.ts programming gaming ram
 ```
 
 **Output:**
@@ -63,7 +63,7 @@ am
 **Input:**
 
 ```bash
-node script.js hello world
+ts-node task-1/task-1.ts hello world
 ```
 
 **Output:**
@@ -83,7 +83,89 @@ node script.js hello world
 Run the script using Node.js with multiple input strings as arguments:
 
 ```bash
-node script.js <string1> <string2> <string3> ...
+ts-node task-1/task-1.ts <string1> <string2> <string3> ...
 ```
 
 Replace `<string1>`, `<string2>`, etc., with actual words or phrases.
+
+## 🧠 Solution
+
+```typescript
+const args = process.argv.slice(2);
+
+function longestCommonSubstring(strings: string[]): string {
+  if (!strings || strings.length === 0) return "";
+
+  const shortestString = strings.reduce((a, b) =>
+    a.length <= b.length ? a : b
+  );
+
+  let longestSubstr = " ";
+
+  for (let i = 0; i < shortestString.length; i++) {
+    for (let j = i + 1; j <= shortestString.length; j++) {
+      const substring = shortestString.slice(i, j);
+
+      const isCommonSubstr = strings.every((str) => str.includes(substring));
+
+      if (isCommonSubstr && substring.length > longestSubstr.length) {
+        longestSubstr = substring;
+      }
+    }
+  }
+
+  return longestSubstr;
+}
+
+console.log(longestCommonSubstring(args));
+```
+
+const args = process.argv.slice(2);
+
+function longestCommonSubstring(strings: string[]): string {
+// If there are no strings, return an empty string
+if (!strings || strings.length === 0) return "";
+
+// Find the shortest string
+const shortestString = strings.reduce((a, b) =>
+a.length <= b.length ? a : b
+);
+
+let longestSubstr = " ";
+
+// Iterate over the shortest string and find all possible substrings
+for (let i = 0; i < shortestString.length; i++) {
+for (let j = i + 1; j <= shortestString.length; j++) {
+const substring = shortestString.slice(i, j);
+
+      // Check if the substring is a common substring in all strings
+      const isCommonSubstr = strings.every((str) => str.includes(substring));
+
+      // If the substring is common and longer than the current longest substring, update the longest substring
+      if (isCommonSubstr && substring.length > longestSubstr.length) {
+        longestSubstr = substring;
+      }
+    }
+
+}
+
+return longestSubstr;
+}
+
+console.log(longestCommonSubstring(args));
+
+**🔍 Explanation**
+
+1. Extract Arguments: The script retrieves input strings from the command line.
+
+2. Find Shortest String: To optimize the search, it selects the shortest string since the longest common substring cannot be longer than this.
+
+3. Iterate Over Substrings: It generates all possible substrings from the shortest string.
+
+4. Check Commonality: Each substring is checked against all input strings to verify if it exists in each of them.
+
+5. Update Longest Substring: If a substring is found in all inputs and is longer than the current longest, it gets updated.
+
+6. Return Result: The longest common substring found is printed.
+
+7. This approach ensures that we efficiently determine the longest shared substring across multiple inputs. 🚀
