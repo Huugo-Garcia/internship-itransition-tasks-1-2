@@ -135,7 +135,3 @@ console.log(longestCommonSubstring(args));
 6. Return Result: The longest common substring found is printed.
 
 7. This approach ensures that we efficiently determine the longest shared substring across multiple inputs. 🚀
-
-```
-
-```
